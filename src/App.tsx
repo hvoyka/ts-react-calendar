@@ -1,7 +1,9 @@
+import {FC} from 'react';
 import './App.css';
+import {RootRouter} from './routes/RootRouter';
 
-function App() {
-  return <>Start</>;
-}
+const App: FC = () => {
+  return <RootRouter />;
+};
 
 export default App;
