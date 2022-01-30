@@ -4,6 +4,8 @@ import {Provider} from 'react-redux';
 import {BrowserRouter} from 'react-router-dom';
 import App from './App';
 import {store} from './store';
+import 'antd/dist/antd.css';
+import './assets/styles/global.css';
 
 ReactDOM.render(
   <Provider store={store}>

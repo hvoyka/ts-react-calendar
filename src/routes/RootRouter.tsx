@@ -1,11 +1,10 @@
 import {Navigate, Route, Routes} from 'react-router-dom';
 
 import {privateRoutes, publicRoutes, ROUTES} from '.';
+import {isAuth} from '../constants';
 import {RequireAuth} from './RequireAuth';
 
 export const RootRouter = () => {
-  const isAuth = true;
-
   return (
     <>
       <Routes>
