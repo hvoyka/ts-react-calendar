@@ -2,11 +2,13 @@ import {Layout, Menu, Row} from 'antd';
 
 import React, {FC} from 'react';
 import {useNavigate} from 'react-router-dom';
-import {isAuth, USER_NAME} from '../../constants';
+import {USER_NAME} from '../../constants';
+import {useTypedSelector} from '../../hooks';
 import {ROUTES} from '../../routes';
 
 export const Navbar: FC = () => {
   const navigate = useNavigate();
+  const {isAuth} = useTypedSelector((state) => state.user);
 
   return (
     <Layout.Header>
