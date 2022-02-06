@@ -55,7 +55,9 @@ export const AuthActionCreators = {
       }
     },
   logOut: () => async (dispatch: AppDispatch) => {
-    try {
-    } catch (error) {}
+    localStorage.removeItem('auth');
+    localStorage.removeItem('user');
+    dispatch(AuthActionCreators.setUser({} as IUser));
+    dispatch(AuthActionCreators.setAuth(false));
   },
 };
