@@ -5,7 +5,7 @@ import {useTypedSelector} from '../hooks';
 import {RequireAuth} from './RequireAuth';
 
 export const RootRouter = () => {
-  const {isAuth} = useTypedSelector((state) => state.user);
+  const {isAuth} = useTypedSelector((state) => state.auth);
 
   return (
     <>

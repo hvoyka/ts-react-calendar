@@ -8,21 +8,21 @@ import {ROUTES} from '../../routes';
 
 export const Navbar: FC = () => {
   const navigate = useNavigate();
-  const {isAuth} = useTypedSelector((state) => state.user);
+  const {isAuth} = useTypedSelector((state) => state.auth);
 
   return (
     <Layout.Header>
       <Row justify="end">
         {isAuth ? (
           <Menu theme="dark" mode="horizontal" selectable={false}>
-            <Menu.Item key="1">{USER_NAME}</Menu.Item>
-            <Menu.Item key="2" onClick={() => console.log('Logout')}>
+            <Menu.Item key="username">{USER_NAME}</Menu.Item>
+            <Menu.Item key="logout" onClick={() => console.log('Logout')}>
               Logout
             </Menu.Item>
           </Menu>
         ) : (
           <Menu theme="dark" mode="horizontal" selectable={false}>
-            <Menu.Item key="1" onClick={() => navigate(ROUTES.LOGIN)}>
+            <Menu.Item key="login" onClick={() => navigate(ROUTES.LOGIN)}>
               Login
             </Menu.Item>
           </Menu>
