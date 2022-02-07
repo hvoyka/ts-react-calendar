@@ -2,7 +2,7 @@ import {AppDispatch} from './../../index';
 import {IUser} from 'models/IUser';
 import {
   AuthActionEnum,
-  SetAuthAction,
+  SetIsAuthAction,
   SetErrorAction,
   SetIsLoadingAction,
   SetUserAction,
@@ -15,8 +15,8 @@ export const AuthActionCreators = {
     payload,
   }),
 
-  setAuth: (payload: boolean): SetAuthAction => ({
-    type: AuthActionEnum.SET_AUTH,
+  setIsAuth: (payload: boolean): SetIsAuthAction => ({
+    type: AuthActionEnum.SET_IS_AUTH,
     payload,
   }),
 
@@ -41,7 +41,7 @@ export const AuthActionCreators = {
           if (mockUser) {
             localStorage.setItem('auth', 'true');
             localStorage.setItem('user', mockUser.username);
-            dispatch(AuthActionCreators.setAuth(true));
+            dispatch(AuthActionCreators.setIsAuth(true));
             dispatch(AuthActionCreators.setUser(mockUser));
           } else {
             dispatch(AuthActionCreators.setError('User not found'));
@@ -58,6 +58,6 @@ export const AuthActionCreators = {
     localStorage.removeItem('auth');
     localStorage.removeItem('user');
     dispatch(AuthActionCreators.setUser({} as IUser));
-    dispatch(AuthActionCreators.setAuth(false));
+    dispatch(AuthActionCreators.setIsAuth(false));
   },
 };
