@@ -1,16 +1,40 @@
 import {Button, DatePicker, Form, Input, Select} from 'antd';
+import {IUser} from 'models';
+import {Moment} from 'moment';
 import React, {FC} from 'react';
-import {rules} from 'utils';
+import {formatDate, rules} from 'utils';
+
+import {IEvent} from 'models';
+import {useTypedSelector} from 'hooks';
 
 const {Option} = Select;
 
 interface EventFormProps {
-  onSubmit: () => void;
+  onSubmit: (values: IEvent) => void;
+  guests: IUser[];
+}
+export interface EventFormValues {
+  date: Moment;
+  guest: string;
+  description: string;
 }
 
-export const EventForm: FC<EventFormProps> = ({onSubmit}) => {
+export const EventForm: FC<EventFormProps> = ({guests, onSubmit}) => {
+  const {user} = useTypedSelector((state) => state.auth);
+
+  const handleAddNewEvent = (values: EventFormValues) => {
+    const date = formatDate(values.date);
+    const formData: IEvent = {
+      author: user.username,
+      description: values.description,
+      guest: values.guest,
+      date,
+    };
+    onSubmit(formData);
+  };
+
   return (
-    <Form onFinish={onSubmit}>
+    <Form onFinish={handleAddNewEvent}>
       <Form.Item
         label="Event description"
         name="description"
@@ -19,16 +43,17 @@ export const EventForm: FC<EventFormProps> = ({onSubmit}) => {
         <Input />
       </Form.Item>
       <Form.Item label="Date" name="date" rules={[rules.required()]}>
-        <DatePicker />
+        <DatePicker format={formatDate} />
       </Form.Item>
-      <Form.Item label="User" name="user" rules={[rules.required()]}>
+      <Form.Item label="Guest" name="guest" rules={[rules.required()]}>
         <Select>
-          <Option value="jack">Jack</Option>
-          <Option value="lucy">Lucy</Option>
-          <Option value="disabled" disabled>
-            Disabled
-          </Option>
-          <Option value="Yiminghe">yiminghe</Option>
+          {guests.map((guest) => {
+            return (
+              <Option key={guest.username} value={guest.username}>
+                {guest.username}
+              </Option>
+            );
+          })}
         </Select>
       </Form.Item>
 
