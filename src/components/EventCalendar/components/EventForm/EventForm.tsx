@@ -42,7 +42,14 @@ export const EventForm: FC<EventFormProps> = ({guests, onSubmit}) => {
       >
         <Input />
       </Form.Item>
-      <Form.Item label="Date" name="date" rules={[rules.required()]}>
+      <Form.Item
+        label="Date"
+        name="date"
+        rules={[
+          rules.required(),
+          rules.isDateAfter('Select date after or today'),
+        ]}
+      >
         <DatePicker format={formatDate} />
       </Form.Item>
       <Form.Item label="Guest" name="guest" rules={[rules.required()]}>

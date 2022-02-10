@@ -1,7 +1,8 @@
 import {IUser, IEvent} from 'models';
 import {EventActionEnum, SetEventsAction, SetGuestsAction} from './types';
 import {AppDispatch} from 'store';
-import UserService from 'api/UserService';
+import {UserService} from 'services/UserService';
+import {StorageService} from 'services';
 
 export const EventActionCreators = {
   setEvents: (payload: IEvent[]): SetEventsAction => ({
@@ -22,20 +23,18 @@ export const EventActionCreators = {
   },
   createEvent: (event: IEvent) => async (dispatch: AppDispatch) => {
     try {
-      const events = localStorage.getItem('events') || '[]';
-      const json = JSON.parse(events) as IEvent[];
-      json.push(event);
-      dispatch(EventActionCreators.setEvents(json));
-      localStorage.setItem('events', JSON.stringify(json));
+      const events: IEvent[] = StorageService.getItem('events') || [];
+      events.push(event);
+      dispatch(EventActionCreators.setEvents(events));
+      StorageService.setItem('events', events);
     } catch (error) {
       console.log(error);
     }
   },
   fetchEvents: (username: string) => async (dispatch: AppDispatch) => {
     try {
-      const events = localStorage.getItem('events') || '[]';
-      const json = JSON.parse(events) as IEvent[];
-      const currentUserEvents = json.filter(
+      const events: IEvent[] = StorageService.getItem('events') || [];
+      const currentUserEvents = events.filter(
         (event) => event.author === username || event.guest === username
       );
       dispatch(EventActionCreators.setEvents(currentUserEvents));

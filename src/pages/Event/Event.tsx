@@ -22,8 +22,6 @@ export const Event: FC = () => {
     fetchEvents(user.username);
   }, []);
 
-  console.log('events', events);
-
   return (
     <>
       <EventCalendar events={events} />

@@ -7,7 +7,7 @@ import {
   SetIsLoadingAction,
   SetUserAction,
 } from './types';
-import UserService from 'api/UserService';
+import {StorageService, UserService} from 'services';
 
 export const AuthActionCreators = {
   setUser: (payload: IUser): SetUserAction => ({
@@ -39,8 +39,9 @@ export const AuthActionCreators = {
             (user) => user.username === username && user.password === password
           );
           if (mockUser) {
-            localStorage.setItem('auth', 'true');
-            localStorage.setItem('user', mockUser.username);
+            StorageService.setItem('auth', 'true');
+            StorageService.setItem('user', mockUser.username);
+
             dispatch(AuthActionCreators.setUser(mockUser));
             dispatch(AuthActionCreators.setIsAuth(true));
           } else {
@@ -55,8 +56,8 @@ export const AuthActionCreators = {
       }
     },
   logOut: () => async (dispatch: AppDispatch) => {
-    localStorage.removeItem('auth');
-    localStorage.removeItem('user');
+    StorageService.removeItem('auth');
+    StorageService.removeItem('user');
     dispatch(AuthActionCreators.setUser({} as IUser));
     dispatch(AuthActionCreators.setIsAuth(false));
   },
