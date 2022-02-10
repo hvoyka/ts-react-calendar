@@ -2,12 +2,12 @@ import {AppDispatch} from './../../index';
 import {IUser} from 'models/IUser';
 import {
   AuthActionEnum,
-  SetAuthAction,
+  SetIsAuthAction,
   SetErrorAction,
   SetIsLoadingAction,
   SetUserAction,
 } from './types';
-import axios from 'axios';
+import {StorageService, UserService} from 'services';
 
 export const AuthActionCreators = {
   setUser: (payload: IUser): SetUserAction => ({
@@ -15,8 +15,8 @@ export const AuthActionCreators = {
     payload,
   }),
 
-  setAuth: (payload: boolean): SetAuthAction => ({
-    type: AuthActionEnum.SET_AUTH,
+  setIsAuth: (payload: boolean): SetIsAuthAction => ({
+    type: AuthActionEnum.SET_IS_AUTH,
     payload,
   }),
 
@@ -34,15 +34,16 @@ export const AuthActionCreators = {
       try {
         dispatch(AuthActionCreators.setIsLoading(true));
         setTimeout(async () => {
-          const response = await axios.get<IUser[]>('./users.json');
+          const response = await UserService.getUsers();
           const mockUser = response.data.find(
             (user) => user.username === username && user.password === password
           );
           if (mockUser) {
-            localStorage.setItem('auth', 'true');
-            localStorage.setItem('user', mockUser.username);
-            dispatch(AuthActionCreators.setAuth(true));
+            StorageService.setItem('auth', 'true');
+            StorageService.setItem('user', mockUser.username);
+
             dispatch(AuthActionCreators.setUser(mockUser));
+            dispatch(AuthActionCreators.setIsAuth(true));
           } else {
             dispatch(AuthActionCreators.setError('User not found'));
           }
@@ -55,9 +56,9 @@ export const AuthActionCreators = {
       }
     },
   logOut: () => async (dispatch: AppDispatch) => {
-    localStorage.removeItem('auth');
-    localStorage.removeItem('user');
+    StorageService.removeItem('auth');
+    StorageService.removeItem('user');
     dispatch(AuthActionCreators.setUser({} as IUser));
-    dispatch(AuthActionCreators.setAuth(false));
+    dispatch(AuthActionCreators.setIsAuth(false));
   },
 };

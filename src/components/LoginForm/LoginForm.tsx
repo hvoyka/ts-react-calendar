@@ -1,9 +1,8 @@
 import {Button, Form, Input} from 'antd';
 import Text from 'antd/lib/typography/Text';
 import {useTypedSelector} from 'hooks';
+import {useActions} from 'hooks/userActions';
 import React, {FC} from 'react';
-import {useDispatch} from 'react-redux';
-import {AuthActionCreators} from 'store/reducers/auth/action-creators';
 import {rules} from 'utils';
 
 interface LoginFormValues {
@@ -12,13 +11,11 @@ interface LoginFormValues {
 }
 
 export const LoginForm: FC = () => {
-  const dispatch = useDispatch();
   const {error, isLoading} = useTypedSelector((state) => state.auth);
+  const {logIn} = useActions();
   const handleSubmit = (values: LoginFormValues) => {
-    console.log('Success:', values);
-    dispatch(AuthActionCreators.logIn(values.username, values.password));
+    logIn(values.username, values.password);
   };
-  console.log(isLoading);
 
   return (
     <Form onFinish={handleSubmit}>
